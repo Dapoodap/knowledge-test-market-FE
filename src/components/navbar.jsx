@@ -2,10 +2,12 @@ import { useState } from 'react';
 import { HiMenu } from 'react-icons/hi';
 import { IoClose } from 'react-icons/io5';
 import logo from '../assets/logo.svg';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
+  const nav = useNavigate();
+
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
@@ -44,8 +46,8 @@ export default function Navbar() {
       </div>
 
       <div className={`md:flex items-center gap-3 sm:w-fit w-full ${isOpen ? 'flex flex-col mt-3' : 'hidden'}`}>
-        <button className='px-6 py-2 text-lg border border-black rounded-lg hover:shadow-custom-shadow hover:border-none'>Login</button>
-        <button className='px-6 py-2 text-lg text-white bg-[#45474B] border border-black rounded-lg hover:shadow-custom-shadow'>Sign Up</button>
+        <button className='px-6 py-2 text-lg border border-black rounded-lg hover:shadow-custom-shadow hover:border-none' onClick={()=>{nav('/login')}}>Login</button>
+        <button className='px-6 py-2 text-lg text-white bg-[#45474B] border border-black rounded-lg hover:shadow-custom-shadow' onClick={()=>{nav('/signup')}}>Sign Up</button>
       </div>
      
     </div>
