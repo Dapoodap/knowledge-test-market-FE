@@ -2,10 +2,31 @@ import { Link,useNavigate } from "react-router-dom";
 import cover from "../assets/loginsignup.jpg";
 import logo from "../assets/logo.svg";
 import { AiOutlineMail, AiOutlineLock } from "react-icons/ai";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { loginProcess } from "../redux/actions/userAction";
 
 export const Login = () => {
-  const nav = useNavigate();
+  const [email,setEmail] = useState('')
+  const [password,setPassword] = useState('')
+  const error = useSelector(state => state.user.error);
+  const isLoading = useSelector(state => state.user.isLoading); 
+  const isAuthenticated = useSelector(state => state.user.isAuthenticated);
 
+  const nav = useNavigate();
+  const dispatch = useDispatch();
+
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      nav('/');
+    }
+  }, [isAuthenticated, nav]);
+  const submitHandler = (e) => {
+    e.preventDefault();
+    const data = {email,password};
+    dispatch(loginProcess(data))
+  }
 
   return (
     <div className="h-[100vh] border border-black flex flex-col lg:flex-row justify-between">
@@ -19,7 +40,7 @@ export const Login = () => {
           <p className="text-sm font-light">
             Please login to continue to your account.
           </p>
-          <form className="flex flex-col justify-center gap-3 mt-5">
+          <form onSubmit={submitHandler} className="flex flex-col justify-center gap-3 mt-5">
             <label htmlFor="email" className="text-sm font-medium">
               Email
             </label>
@@ -29,6 +50,8 @@ export const Login = () => {
                 type="email"
                 name="email"
                 id="email"
+                value={email}
+                onChange={(e)=>{setEmail(e.target.value)}}
               />
               <AiOutlineMail className="absolute text-gray-400 transform -translate-y-1/2 right-3 top-1/2" />
             </div>
@@ -41,6 +64,8 @@ export const Login = () => {
                 type="password"
                 name="password"
                 id="password"
+                value={password}
+                onChange={(e)=>{setPassword(e.target.value)}}
               />
               <AiOutlineLock className="absolute text-gray-400 transform -translate-y-1/2 right-3 top-1/2" />
             </div>
@@ -48,9 +73,10 @@ export const Login = () => {
               className="max-w-full px-5 py-3 font-medium text-white bg-blue-500 rounded-xl"
               type="submit"
             >
-              Login
+              {isLoading ? 'Logging in...' : 'Login'}
             </button>
           </form>
+          {error && <div style={{color: 'red'}}>{error}</div>}
           <p className="m-auto mt-10 text-base font-medium text-gray-400 lg:m-0 w-fit">
             Need an account?{" "}
             <Link className="text-base font-medium text-gray-600" to={"/signup"}>
