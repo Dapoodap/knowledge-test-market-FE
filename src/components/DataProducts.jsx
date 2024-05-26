@@ -8,29 +8,27 @@ export const DataProducts = () => {
   const dispatch = useDispatch();
   const products = useSelector(state => state.product.products);
   const loading = useSelector(state => state.product.loading);
-  const [editingProduct, setEditingProduct] = useState(null); // State to store the product being edited
-  const [formData, setFormData] = useState({}); // State to store form data
+  const [editingProduct, setEditingProduct] = useState(null); // State untuk mengetahui kalo kondisinya sedang mengedit
+  const [formData, setFormData] = useState({}); // Untuk mengrimkan data
 
   useEffect(() => {
     dispatch(getAllProducts());
   }, [dispatch]);
 
-  // Function to handle edit button click
+  // fungsi handle edit
   const handleEditClick = (product) => {
-    setEditingProduct(product);
-    setFormData({ ...product }); // Set form data to current product data
+    setEditingProduct(product); //membuat sekarang jadi mode product
+    setFormData({ ...product }); // Set form data ke current data 
   };
 
   // Function to handle cancel edit
   const cancelEdit = () => {
-    setEditingProduct(null);
+    setEditingProduct(null); //membuat jadi mode tambah
     setFormData({}); // Clear form data
   };
 
   // Function to handle save edit
   const saveEdit = () => {
-    // Dispatch action to edit product
-    // dispatch(editProduct(formData));
     dispatch(updateProduct(formData, formData.id));
     setEditingProduct(null);
     setFormData({}); // Clear form data
@@ -40,17 +38,18 @@ export const DataProducts = () => {
 
   // Function to handle add product
   const handleAddProduct = () => {
-    // Display the form for adding a product
+    // ini buat nambahin data handle kalo datanya ditambah
     dispatch(postProduct(formData));
     setFormData({});
   };
 
+  // handle image submi
   const handleImage = async (e) => {
     const selectedFile = e.target.files[0];
     formData.file = selectedFile;
   };
 
-  // Function to handle form change
+  // Function untuk handling form 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
@@ -59,15 +58,15 @@ export const DataProducts = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (editingProduct) {
-      // If editing a product, save the changes
+      // kalo kondisinya mode edit dia akan ke saveEdit
       saveEdit();
     } else {
-      // If adding a new product, dispatch action to add product
-      // dispatch(addProduct(formData));
+      // If mode tambah data baru dia jalankan fungsi addproduct
       handleAddProduct();
     }
   };
 
+  // untuk hapus data
   const handleDelete = (id) =>{
     dispatch(deleteProduct(id))
   }
