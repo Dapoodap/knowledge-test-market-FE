@@ -116,8 +116,7 @@ export const getUserByID = (userID) => async (dispatch) => {
 
         // Jika permintaan berhasil, kirim data ke redux store
         const userData = res.data;
-
-        dispatch(doneUserFetching(userData));} 
+        dispatch(doneUserFetching(userData.data));} 
         catch (error) {
         // Menangani kesalahan jika terjadi
         let errorMessage = "An error occurred";

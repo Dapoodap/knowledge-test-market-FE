@@ -35,6 +35,7 @@ const userReducer = (state = initialState, action) => {
             return {
                 ...state,
                 token: action.payload.token,
+                // user : action.payload,
                 isAuthenticated: true,
                 isLoading: false,
                 error: null
@@ -42,7 +43,7 @@ const userReducer = (state = initialState, action) => {
             case DONE_USERFETCH_PROCESS:
                 return {
                     ...state,
-                    user: action.payload.data,
+                    user: action.payload,
                     isLoading: false,
                     error: null
                 };
